@@ -1,0 +1,115 @@
+/* FlashCard.css - Dark Theme */
+
+.flashcard-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  background-color: #2d343f;
+}
+
+.flashcard {
+  background-color: #3b424e;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+}
+
+.flashcard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.flashcard-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #ffffff;
+}
+
+.flashcard-link {
+  display: inline-block;
+  font-size: 0.95rem;
+  color: #876feb;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+  word-break: break-word;
+}
+
+.flashcard-link:hover {
+  text-decoration: underline;
+}
+
+.flashcard-description {
+  font-size: 0.95rem;
+  color: #c1c1c1;
+  line-height: 1.4;
+}
+
+.flash-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 1.5rem;
+  background-color: #2d343f;
+}
+
+.flash-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+}
+
+.flash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.flash-card {
+  background: linear-gradient(135deg, #876feb, #a88eff);
+  color: #fff;
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.flash-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 20px rgba(168, 142, 255, 0.3);
+}
+
+.flash-card-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.flash-card-content {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+  .flash-title {
+    font-size: 1.4rem;
+  }
+
+  .flash-card {
+    padding: 1rem;
+  }
+
+  .flash-card-title {
+    font-size: 1rem;
+  }
+
+  .flash-card-content {
+    font-size: 0.9rem;
+  }
+}

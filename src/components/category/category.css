@@ -1,0 +1,137 @@
+.category-container {
+  padding: 2rem;
+  max-width: 900px;
+  margin: auto;
+  font-family: "Jockey One", sans-serif;
+  color: #ffffff;
+}
+
+.category-container h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.category-card {
+  background-color: #3b424e;
+  border-radius: 12px;
+  border: 1px solid #444c59;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.category-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-body {
+  padding: 1.5rem;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.card-body span {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: #2d343f;
+  border-top: 1px solid #444c59;
+}
+
+.btn {
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.btn.update {
+  background-color: #876feb;
+  color: white;
+}
+
+.btn.update:hover {
+  background-color: #a88eff;
+}
+
+.btn.delete {
+  background-color: #f87171;
+  color: white;
+}
+
+.btn.delete:hover {
+  background-color: #ef4444;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal {
+  background-color: #3b424e;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.modal input {
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  background-color: #4a515e;
+  color: #fff;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.modal input::placeholder {
+  color: #c1c1c1;
+}
+
+.btn.submit {
+  background: linear-gradient(135deg, #876feb, #a88eff);
+  color: white;
+  width: 100%;
+}
