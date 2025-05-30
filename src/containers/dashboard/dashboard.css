@@ -11,16 +11,17 @@ body, html {
   background-color: #2d343f;
   color: #ffffff;
   scroll-behavior: smooth;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .dash-wrapper {
-  height: 100dvh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #2d343f;
-  overflow: hidden;
+  overflow-y: auto;
 }
+
 
 .dash-header {
   display: flex;
