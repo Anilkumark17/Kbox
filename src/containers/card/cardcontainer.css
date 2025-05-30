@@ -16,32 +16,66 @@ body, html {
 }
 
 
+/* Action Buttons Container */
 .fav {
-  margin-top: 1rem;
   display: flex;
-  justify-content: flex-end;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.fav button {
-  background-color: transparent;
-  color: #fcd34d; /* Yellow tone for star */
-  border: 2px solid #fcd34d;
+/* Buttons shared styles */
+.fav button,
+.edit,
+.delete {
+  font-size: 14px;
+  padding: 6px 12px;
   border-radius: 8px;
-  padding: 0.5rem 1rem;
-  font-size: 0.95rem;
+  border: none;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-weight: 500;
-  letter-spacing: 0.4px;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Favorite Button */
+.fav button {
+  background-color: transparent;
+  color: #fcd34d;
+  border: 2px solid #fcd34d;
 }
 
 .fav button:hover {
   background-color: #fcd34d;
-  color: #1f2937; /* Dark background tone for contrast */
-  transform: translateY(-2px);
+  color: #1f2937;
   box-shadow: 0 4px 12px rgba(252, 211, 77, 0.3);
+  transform: translateY(-2px);
 }
 
+/* Edit Button */
+.edit {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.edit:hover {
+  background-color: #6366f1;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Delete Button */
+.delete {
+  background-color: #ef4444;
+  color: white;
+}
+
+.delete:hover {
+  background-color: #f87171;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  transform: translateY(-2px);
+}
 /* Mobile adjustments */
 @media (max-width: 480px) {
   .fav {
@@ -239,6 +273,12 @@ body, html {
   z-index: 1;
 }
 
+.action{
+    display: flex;
+    gap: 20px;
+  }
+
+
 .card::before {
   content: '';
   position: absolute;
@@ -346,6 +386,21 @@ body, html {
     padding: 1rem;
   }
 
+  .fav {
+    gap: 8px;
+   
+  }
+  
+  .action .edit,.delete{
+    width: 150px;
+  }
+
+  .fav button,
+  .edit,
+  .delete {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
   .logo {
     font-size: 1.5rem;
   }
