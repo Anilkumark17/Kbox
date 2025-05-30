@@ -1,18 +1,34 @@
 import React, { useState, lazy, Suspense, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import "./resource.css"; // Assuming you have a CSS file for styling
+import { useNavigate, useParams } from "react-router-dom";
+import "./resource.css";
 const Card = lazy(() => import("../../components/card/Card"));
+import Notes from "../../components/notes/Notes";
+import { supabase } from "../../utils/db";
+
 const ResourcesContainer = () => {
   const [active, setActive] = useState("links");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [category, setCategoryName] = useState([]);
   const navigate = useNavigate();
+  const { id } = useParams();
+  useEffect(() => {
+    const fetchCatName = async () => {
+      const { data: categoryName } = await supabase
+        .from("categories")
+        .select("name")
+        .eq("id", id)
+        .single();
+      setCategoryName(categoryName?.name);
+    };
+    fetchCatName();
+  }, [id]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const handleMenuClick = (e) => {
-    if (e.target.classList.contains('nav-menu')) {
+    if (e.target.classList.contains("nav-menu")) {
       setIsMenuOpen(false);
     }
   };
@@ -20,21 +36,21 @@ const ResourcesContainer = () => {
   // Close menu on escape key
   useEffect(() => {
     const handleEscape = (e) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         setIsMenuOpen(false);
       }
     };
 
     if (isMenuOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
-      document.body.classList.add('menu-open');
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
+      document.body.classList.add("menu-open");
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
-      document.body.classList.remove('menu-open');
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
+      document.body.classList.remove("menu-open");
     };
   }, [isMenuOpen]);
 
@@ -42,20 +58,35 @@ const ResourcesContainer = () => {
     <div>
       <header>
         <div className="nav-header">
-          <button className="hamburger-btn" onClick={toggleMenu} aria-label="Toggle menu">
-            <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
-            <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
-            <span className={`hamburger-line ${isMenuOpen ? 'open' : ''}`}></span>
+          <button
+            className="hamburger-btn"
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+          >
+            <span
+              className={`hamburger-line ${isMenuOpen ? "open" : ""}`}
+            ></span>
+            <span
+              className={`hamburger-line ${isMenuOpen ? "open" : ""}`}
+            ></span>
+            <span
+              className={`hamburger-line ${isMenuOpen ? "open" : ""}`}
+            ></span>
           </button>
           <p className="nav-title">Categories</p>
         </div>
-        <nav className={`nav-menu ${isMenuOpen ? 'open' : ''}`} onClick={handleMenuClick}>
+        <nav
+          className={`nav-menu ${isMenuOpen ? "open" : ""}`}
+          onClick={handleMenuClick}
+        >
           <ul>
             <li>
-              <p onClick={() => {
-                navigate('/dashboard');
-                setIsMenuOpen(false);
-              }}>
+              <p
+                onClick={() => {
+                  navigate("/dashboard");
+                  setIsMenuOpen(false);
+                }}
+              >
                 <i className="fas fa-home"></i>
                 Home
               </p>
@@ -87,13 +118,13 @@ const ResourcesContainer = () => {
             <li>
               <p
                 onClick={() => {
-                  setActive("audio");
+                  setActive("notes");
                   setIsMenuOpen(false);
                 }}
-                className={active === "audio" ? "active" : ""}
+                className={active === "notes" ? "active" : ""}
               >
                 <i className="fas fa-music"></i>
-                Audio
+                Notes
               </p>
             </li>
           </ul>
@@ -103,19 +134,13 @@ const ResourcesContainer = () => {
       <div className="main">
         {active === "links" && (
           <div className="links">
-            <Card />
+            <Card category={category} />
           </div>
         )}
-        {active === "images" && (
-          <div className="images">
-            <h2>Images Section</h2>
-            {/* Add your images-related content here */}
-          </div>
-        )}
-        {active === "audio" && (
-          <div className="audio">
-            <h2>Audio Section</h2>
-            {/* Add your audio-related content here */}
+        {active === "images" && <div className="images">{/* <Pic/> */}</div>}
+        {active === "notes" && (
+          <div className="notes">
+            <Notes category={category} id={id} />
           </div>
         )}
       </div>
