@@ -3,6 +3,7 @@ import { supabase } from "../../utils/db";
 import "./notes.css";
 import { deleteNote, favUpdate, not_favUpdate } from "../../api/NoteApi";
 
+
 const NotesContainer = ({ category, id }) => {
   const [showModal, setShowModal] = useState(false);
   const [notes, setNotes] = useState([]);
@@ -110,8 +111,6 @@ const NotesContainer = ({ category, id }) => {
           </div>
         </div>
       )}
-
-      {/* View Full Note Modal */}
       {viewNote && (
         <div className="modal-overlay">
           <div className="modal">
@@ -134,6 +133,7 @@ const NotesContainer = ({ category, id }) => {
           </div>
         </div>
       )}
+
 
       <main className="card-grid">
         {notes.map((item) => (
