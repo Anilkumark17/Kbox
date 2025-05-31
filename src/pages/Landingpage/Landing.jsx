@@ -74,6 +74,10 @@ const Landing = () => {
               <h3>Anil</h3>
               <p>CEO & Fullstack Developer</p>
             </div>
+             <div className="team-member">
+              <h3>Mani chandhana</h3>
+              <p>UI UX designer</p>
+            </div>
             <div className="team-member">
               <h3>Sravya</h3>
               <p>Backend Developer</p>
