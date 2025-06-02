@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LoginContainer from "../../containers/login/LoginContainer";
 import { supabase } from "../../utils/db";
-import { useNavigate } from "react-router-dom";
-
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // ✅ Redirect if already logged in
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        navigate("/dashboard");
+      }
+    };
+
+    checkUser();
+  }, [navigate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -25,16 +36,12 @@ const Login = () => {
       }
 
       const { user } = data;
-
       if (!user) {
         alert("User not found");
         return;
       }
 
       console.log("Logged in user:", user);
-
-      // Send user_id to backend
-  
 
       navigate("/dashboard");
     } catch (err) {

@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../utils/db";
 import "./notes.css";
-import { deleteNote, favUpdate, not_favUpdate } from "../../api/NoteApi";
-
+import {
+  deleteNote,
+  favUpdate,
+  not_favUpdate,
+  updateNote,
+} from "../../api/NoteApi";
 
 const NotesContainer = ({ category, id }) => {
   const [showModal, setShowModal] = useState(false);
@@ -11,6 +15,7 @@ const NotesContainer = ({ category, id }) => {
   const [noteText, setNoteText] = useState("");
   const [favMap, setFavoriteMap] = useState({});
   const [viewNote, setViewNote] = useState(null);
+  const [editNoteId, setEditNoteId] = useState(null); // used for edit flow
 
   const fetchNotes = async () => {
     const { data, error } = await supabase
@@ -22,6 +27,11 @@ const NotesContainer = ({ category, id }) => {
       console.error("Fetch error:", error.message);
     } else {
       setNotes(data);
+      const favs = {};
+      data.forEach((note) => {
+        favs[note.id] = note.is_favorite || false;
+      });
+      setFavoriteMap(favs);
     }
   };
 
@@ -33,55 +43,67 @@ const NotesContainer = ({ category, id }) => {
         content: noteText,
         category_id: id,
       };
-      const { error } = await supabase.from("notes").insert([payload]).select();
-      if (error) {
-        console.error("Insert error:", error.message);
+
+      if (editNoteId) {
+        await updateNote(editNoteId, payload);
       } else {
-        setNoteTitle("");
-        setNoteText("");
-        setShowModal(false);
-        fetchNotes();
+        const { error } = await supabase.from("notes").insert([payload]);
+        if (error) {
+          console.error("Insert error:", error.message);
+          return;
+        }
       }
+
+      setNoteTitle("");
+      setNoteText("");
+      setEditNoteId(null);
+      setShowModal(false);
+      fetchNotes();
     } catch (err) {
       console.error("Caught exception:", err.message);
     }
   };
 
-  useEffect(() => {
-    if (id) fetchNotes();
-  }, [id]);
-
-  const DeleteHandler = async (id) => {
-    await deleteNote(id);
-    window.location.reload();
+  const deleteHandler = async (noteId) => {
+    await deleteNote(noteId);
+    setNotes((prev) => prev.filter((note) => note.id !== noteId));
   };
 
-  const favHandler = async (id) => {
-    await favUpdate(id);
-    setFavoriteMap((prev) => ({ ...prev, [id]: true }));
+  const favHandler = async (noteId) => {
+    await favUpdate(noteId);
+    setFavoriteMap((prev) => ({ ...prev, [noteId]: true }));
   };
 
-  const NotFavHanlder = async (id) => {
-    await not_favUpdate(id);
-    setFavoriteMap((prev) => ({ ...prev, [id]: false }));
+  const notFavHandler = async (noteId) => {
+    await not_favUpdate(noteId);
+    setFavoriteMap((prev) => ({ ...prev, [noteId]: false }));
   };
 
   const displayHandler = (note) => {
     setViewNote(note);
   };
 
+  useEffect(() => {
+    if (id) fetchNotes();
+  }, [id]);
+
   return (
     <div className="container">
       <header className="header">
         <div className="logo">Notes Page</div>
-        <button className="create-btn" onClick={() => setShowModal(true)}>
+        <button className="create-btn" onClick={() => {
+          setShowModal(true);
+          setEditNoteId(null);
+          setNoteTitle("");
+          setNoteText("");
+        }}>
           + Create
         </button>
       </header>
 
       <h2 className="category-title">{category}</h2>
 
-      {/* Create Note Modal */}
+      {/* Modal: Create or Edit */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
@@ -105,12 +127,14 @@ const NotesContainer = ({ category, id }) => {
                 required
               />
               <button type="submit" className="submit-btn">
-                Add Note
+                {editNoteId ? "Update Note" : "Add Note"}
               </button>
             </form>
           </div>
         </div>
       )}
+
+      {/* Modal: View Note */}
       {viewNote && (
         <div className="modal-overlay">
           <div className="modal">
@@ -124,6 +148,7 @@ const NotesContainer = ({ category, id }) => {
               onClick={() => {
                 setNoteTitle(viewNote.title);
                 setNoteText(viewNote.content);
+                setEditNoteId(viewNote.id);
                 setShowModal(true);
                 setViewNote(null);
               }}
@@ -134,7 +159,7 @@ const NotesContainer = ({ category, id }) => {
         </div>
       )}
 
-
+      {/* Notes Grid */}
       <main className="card-grid">
         {notes.map((item) => (
           <div key={item.id} className="card">
@@ -155,10 +180,7 @@ const NotesContainer = ({ category, id }) => {
             <div className="fav-button">
               <div className="fav">
                 {favMap[item.id] ? (
-                  <button
-                    onClick={() => NotFavHanlder(item.id)}
-                    className="fav"
-                  >
+                  <button onClick={() => notFavHandler(item.id)} className="fav">
                     ★ Favorited
                   </button>
                 ) : (
@@ -167,7 +189,7 @@ const NotesContainer = ({ category, id }) => {
                   </button>
                 )}
               </div>
-              <button className="delete" onClick={() => DeleteHandler(item.id)}>
+              <button className="delete" onClick={() => deleteHandler(item.id)}>
                 delete
               </button>
             </div>
