@@ -27,6 +27,7 @@ const CardContainer = ({
   const [editTitle, setEditTitle] = useState("");
   const [editLink, setEditLink] = useState("");
   const [editDesc, setEditDesc] = useState("");
+  const [openMenuId, setOpenMenuId] = useState(null);
 
   const favHandler = async (cardId) => {
     await favUpdate(cardId);
@@ -49,6 +50,7 @@ const CardContainer = ({
     setEditLink(card.link);
     setEditDesc(card.description);
     setEditModal(true);
+    setOpenMenuId(null);
   };
 
   const handleEditSubmit = async (e) => {
@@ -103,16 +105,13 @@ const CardContainer = ({
     <div className="container">
       <header className="header">
         <div className="logo">Links Page</div>
-        <button className="create-btn" onClick={() => setShowModal(true)}>
-          + Create
-        </button>
       </header>
 
       <h2 className="category-title">{categoryName}</h2>
 
       {/* Create Modal */}
       {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+        <div className="modal-over" onClick={() => setShowModal(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setShowModal(false)}>
               ✖
@@ -190,7 +189,35 @@ const CardContainer = ({
       <main className="card-grid">
         {cards.map((item) => (
           <div key={item.id} className="card">
-            <h3 className="card-title">{item.title}</h3>
+            <div className="card-header">
+              <h3 className="card-title">{item.title}</h3>
+              <div className="menu-container">
+                <button
+                  className="menu-btn"
+                  onClick={() =>
+                    setOpenMenuId(openMenuId === item.id ? null : item.id)
+                  }
+                >
+                  ⋮
+                </button>
+                {openMenuId === item.id && (
+                  <div className="dropdown-menu">
+                    <button
+                      className="dropdown-item"
+                      onClick={() => handleEdit(item)}
+                    >
+                      ✎ Edit
+                    </button>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      🗑 Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
             <p className="card-desc">{item.description}</p>
             <a
               href={item.link}
@@ -200,8 +227,6 @@ const CardContainer = ({
             >
               Visit Link ↗
             </a>
-            <br />
-            <br />
             <div className="fav">
               {favoriteMap[item.id] ? (
                 <button onClick={() => notFavHandler(item.id)} className="fav">
@@ -212,22 +237,15 @@ const CardContainer = ({
                   ☆ Mark Fav
                 </button>
               )}
-              <div className="action">
-                {" "}
-                <button onClick={() => handleEdit(item)} className="edit">
-                  ✎{" "}edit
-                </button>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="delete"
-                >
-                  🗑{" "}delete
-                </button>
-              </div>
             </div>
           </div>
         ))}
       </main>
+
+      {/* Floating Create Button */}
+      <button className="floating-create-btn" onClick={() => setShowModal(true)}>
+        +
+      </button>
     </div>
   );
 };

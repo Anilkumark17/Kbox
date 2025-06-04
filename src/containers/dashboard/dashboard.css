@@ -7,7 +7,7 @@
 }
 
 body, html {
-  font-family: "Jockey One", sans-serif;
+  /* font-family: "Jockey One", sans-serif; */
   background-color: #2d343f;
   color: #ffffff;
   scroll-behavior: smooth;
@@ -22,6 +22,38 @@ body, html {
   overflow-y: auto;
 }
 
+.fab-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #876feb, #a88eff);
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  border: none;
+  box-shadow: 0 4px 12px rgba(135, 111, 235, 0.4);
+  cursor: pointer;
+  z-index: 1001;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.fab-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 18px rgba(135, 111, 235, 0.5);
+}
+
+@media (max-width: 480px) {
+  .fab-button {
+    width: 50px;
+    height: 50px;
+    font-size: 1.8rem;
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+}
 
 .dash-header {
   display: flex;
@@ -31,7 +63,6 @@ body, html {
   background-color: #252a33;
   border-bottom: 1px solid #444c59;
   flex-wrap: wrap;
-  position: sticky;
   top: 0;
   z-index: 100;
   backdrop-filter: blur(8px);

@@ -10,9 +10,6 @@ const DashboardContainer = ({ cat, onCat, onSubmit }) => {
     <div className="dash-wrapper">
       <header className="dash-header">
         <div className="dash-logo">K-box</div>
-        <button className="dash-create-btn" onClick={() => setShowModal(true)}>
-          Create
-        </button>
       </header>
 
       <FlashCard />
@@ -42,6 +39,11 @@ const DashboardContainer = ({ cat, onCat, onSubmit }) => {
           <Category />
         </div>
       </div>
+
+      {/* Floating Create Button */}
+      <button className="fab-button" onClick={() => setShowModal(true)}>
+        +
+      </button>
     </div>
   );
 };

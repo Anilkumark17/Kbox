@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "../../utils/db";
 import "./notes.css";
 import {
@@ -8,6 +8,62 @@ import {
   updateNote,
 } from "../../api/NoteApi";
 
+const CustomRichTextEditor = ({ value, onChange }) => {
+  const editorRef = useRef(null);
+
+  useEffect(() => {
+    if (editorRef.current && editorRef.current.innerHTML !== value) {
+      editorRef.current.innerHTML = value || "";
+    }
+  }, [value]);
+
+  const handleInput = () => {
+    const html = editorRef.current.innerHTML;
+    onChange(html);
+  };
+
+  const execCmd = (command) => {
+    document.execCommand(command, false, null);
+    onChange(editorRef.current.innerHTML);
+    editorRef.current.focus();
+  };
+
+  return (
+    <div className="editor-wrapper">
+      <div className="editor-toolbar">
+        <button type="button" onClick={() => execCmd("bold")} title="Bold">
+          <b>B</b>
+        </button>
+        <button type="button" onClick={() => execCmd("italic")} title="Italic">
+          <i>I</i>
+        </button>
+        <button
+          type="button"
+          onClick={() => execCmd("underline")}
+          title="Underline"
+        >
+          <u>U</u>
+        </button>
+        <button
+          type="button"
+          onClick={() => execCmd("insertUnorderedList")}
+          title="Bullet List"
+        >
+          • List
+        </button>
+      </div>
+      <div
+        ref={editorRef}
+        className="editor-content"
+        contentEditable
+        spellCheck={true}
+        onInput={handleInput}
+        aria-label="Note content editor"
+      />
+    </div>
+  );
+};
+
 const NotesContainer = ({ category, id }) => {
   const [showModal, setShowModal] = useState(false);
   const [notes, setNotes] = useState([]);
@@ -15,7 +71,7 @@ const NotesContainer = ({ category, id }) => {
   const [noteText, setNoteText] = useState("");
   const [favMap, setFavoriteMap] = useState({});
   const [viewNote, setViewNote] = useState(null);
-  const [editNoteId, setEditNoteId] = useState(null); // used for edit flow
+  const [editNoteId, setEditNoteId] = useState(null);
 
   const fetchNotes = async () => {
     const { data, error } = await supabase
@@ -91,19 +147,10 @@ const NotesContainer = ({ category, id }) => {
     <div className="container">
       <header className="header">
         <div className="logo">Notes Page</div>
-        <button className="create-btn" onClick={() => {
-          setShowModal(true);
-          setEditNoteId(null);
-          setNoteTitle("");
-          setNoteText("");
-        }}>
-          + Create
-        </button>
       </header>
 
       <h2 className="category-title">{category}</h2>
 
-      {/* Modal: Create or Edit */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
@@ -119,13 +166,9 @@ const NotesContainer = ({ category, id }) => {
                 className="input"
                 required
               />
-              <textarea
-                className="textarea"
-                value={noteText}
-                onChange={(e) => setNoteText(e.target.value)}
-                placeholder="Write something important..."
-                required
-              />
+              <div className="editor-container">
+                <CustomRichTextEditor value={noteText} onChange={setNoteText} />
+              </div>
               <button type="submit" className="submit-btn">
                 {editNoteId ? "Update Note" : "Add Note"}
               </button>
@@ -134,7 +177,6 @@ const NotesContainer = ({ category, id }) => {
         </div>
       )}
 
-      {/* Modal: View Note */}
       {viewNote && (
         <div className="modal-overlay">
           <div className="modal">
@@ -142,9 +184,16 @@ const NotesContainer = ({ category, id }) => {
               ✖
             </button>
             <h2>{viewNote.title}</h2>
-            <p>{viewNote.content}</p>
+            <div
+              dangerouslySetInnerHTML={{ __html: viewNote.content }}
+              style={{
+                color: "white",
+                height: "700px",
+                overflowY: "auto",
+              }}
+            />
             <button
-              className="edit"
+              className="edit-btn"
               onClick={() => {
                 setNoteTitle(viewNote.title);
                 setNoteText(viewNote.content);
@@ -159,43 +208,56 @@ const NotesContainer = ({ category, id }) => {
         </div>
       )}
 
-      {/* Notes Grid */}
       <main className="card-grid">
         {notes.map((item) => (
           <div key={item.id} className="card">
-            <div onClick={() => displayHandler(item)}>
+            <div
+              onClick={() => displayHandler(item)}
+              style={{ cursor: "pointer" }}
+            >
               <h3 className="card-title">{item.title}</h3>
-              <p
+              <div
                 className="notes-content"
-                style={{
-                  WebkitLineClamp: 3,
-                  overflow: "hidden",
-                  display: "-webkit-box",
-                  WebkitBoxOrient: "vertical",
-                }}
-              >
-                {item.content}
-              </p>
+                dangerouslySetInnerHTML={{ __html: item.content }}
+                 style={{ color:'white' }}
+              />
             </div>
-            <div className="fav-button">
-              <div className="fav">
-                {favMap[item.id] ? (
-                  <button onClick={() => notFavHandler(item.id)} className="fav">
-                    ★ Favorited
-                  </button>
-                ) : (
-                  <button onClick={() => favHandler(item.id)} className="fav">
-                    ☆ Mark Fav
-                  </button>
-                )}
-              </div>
-              <button className="delete" onClick={() => deleteHandler(item.id)}>
+            <div className="fav-buttons">
+              {favMap[item.id] ? (
+                <button
+                  onClick={() => notFavHandler(item.id)}
+                  className="fav-btn"
+                >
+                  ★ Favorited
+                </button>
+              ) : (
+                <button onClick={() => favHandler(item.id)} className="fav-btn">
+                  ☆ Mark Fav
+                </button>
+              )}
+              <button
+                className="delete-btn"
+                onClick={() => deleteHandler(item.id)}
+              >
                 delete
               </button>
             </div>
           </div>
         ))}
       </main>
+
+      {/* Floating Create Button */}
+      <button
+        className="floating-create-btn"
+        onClick={() => {
+          setShowModal(true);
+          setEditNoteId(null);
+          setNoteTitle("");
+          setNoteText("");
+        }}
+      >
+        +
+      </button>
     </div>
   );
 };
