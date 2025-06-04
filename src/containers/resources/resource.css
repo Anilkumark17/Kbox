@@ -26,7 +26,8 @@ header {
 .nav-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 10rem;
+
   position: relative;
   z-index: 1001;
 }
@@ -236,8 +237,7 @@ h2::after {
     width: 280px;
     height: 100vh;
     background-color: #252a33;
-    padding: 5rem 2rem 2rem;
-    transition: right 0.3s ease;
+    /* padding: 5rem 2rem 2rem; */
     box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);
     z-index: 998;
   }

@@ -58,7 +58,10 @@ const ResourcesContainer = () => {
     <div>
       <header>
         <div className="nav-header">
-          <button
+        
+          <p className="nav-title">Categories</p>
+
+            <button
             className="hamburger-btn"
             onClick={toggleMenu}
             aria-label="Toggle menu"
@@ -73,7 +76,6 @@ const ResourcesContainer = () => {
               className={`hamburger-line ${isMenuOpen ? "open" : ""}`}
             ></span>
           </button>
-          <p className="nav-title">Categories</p>
         </div>
         <nav
           className={`nav-menu ${isMenuOpen ? "open" : ""}`}
