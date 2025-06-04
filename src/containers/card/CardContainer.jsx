@@ -112,7 +112,19 @@ const CardContainer = ({
       {/* Create Modal */}
       {showModal && (
         <div className="modal-over" onClick={() => setShowModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
+          <div
+            style={{
+              backgroundColor: "#2a2c37",
+              width:'300px',
+              height: "300px",
+              borderRadius: "12px",
+              padding: "1.5rem 2rem",
+              paddingTop:'50px',
+              marginTop: "100px",
+              boxShadow: " 0 8px 24px rgba(0, 0, 0, 0.6)x",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <button className="modal-close" onClick={() => setShowModal(false)}>
               ✖
             </button>
@@ -243,7 +255,10 @@ const CardContainer = ({
       </main>
 
       {/* Floating Create Button */}
-      <button className="floating-create-btn" onClick={() => setShowModal(true)}>
+      <button
+        className="floating-create-btn"
+        onClick={() => setShowModal(true)}
+      >
         +
       </button>
     </div>
