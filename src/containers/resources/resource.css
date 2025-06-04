@@ -26,7 +26,7 @@ header {
 .nav-header {
   display: flex;
   align-items: center;
-  gap: 10rem;
+  gap: 14rem;
 
   position: relative;
   z-index: 1001;
