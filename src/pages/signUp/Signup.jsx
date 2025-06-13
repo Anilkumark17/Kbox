@@ -3,7 +3,7 @@ import { supabase } from "../../utils/db";
 import { useNavigate } from "react-router-dom";
 import "./signup.css";
 
-const Signup = () => {
+const Signup = ({ redirectUrl }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -46,7 +46,13 @@ const Signup = () => {
       }
 
       console.log("Signup successful:", data);
-      navigate("/dashboard");
+      
+      // Redirect to the original URL or dashboard
+      if (redirectUrl) {
+        navigate(redirectUrl);
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
       console.error("Signup error:", error.message);
     }

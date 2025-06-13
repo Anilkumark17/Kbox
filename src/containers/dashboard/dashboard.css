@@ -100,6 +100,40 @@ body, html {
   box-shadow: 0 4px 14px rgba(168, 142, 255, 0.4);
 }
 
+/* Tab Navigation */
+.tab-navigation {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 2rem;
+  background-color: #252a33;
+  border-bottom: 1px solid #444c59;
+  gap: 1rem;
+}
+
+.tab-btn {
+  background: none;
+  border: 2px solid #444c59;
+  color: #c1c1c1;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.tab-btn:hover {
+  border-color: #876feb;
+  color: #ffffff;
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, #876feb, #a88eff);
+  border-color: #876feb;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(168, 142, 255, 0.3);
+}
+
 .dash-modal-overlay {
   position: fixed;
   top: 0;
@@ -247,6 +281,17 @@ body, html {
   .dash-create-btn {
     padding: 0.6rem 1.2rem;
     font-size: 0.9rem;
+  }
+
+  .tab-navigation {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .tab-btn {
+    width: 100%;
+    text-align: center;
   }
 
   .category-dip {

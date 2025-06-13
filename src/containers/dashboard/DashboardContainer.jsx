@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import "./dashboard.css";
 import Category from "../../components/category/Category";
 import FlashCard from "../flashCards/FlashCard";
+import TeamSpacesList from "../../components/teamSpaces/TeamSpacesList";
 
 const DashboardContainer = ({ cat, onCat, onSubmit }) => {
   const [showModal, setShowModal] = useState(false);
+  const [activeTab, setActiveTab] = useState("personal");
 
   return (
     <div className="dash-wrapper">
@@ -13,6 +15,22 @@ const DashboardContainer = ({ cat, onCat, onSubmit }) => {
       </header>
 
       <FlashCard />
+
+      {/* Tab Navigation */}
+      <div className="tab-navigation">
+        <button 
+          className={`tab-btn ${activeTab === "personal" ? "active" : ""}`}
+          onClick={() => setActiveTab("personal")}
+        >
+          Personal Space
+        </button>
+        <button 
+          className={`tab-btn ${activeTab === "teams" ? "active" : ""}`}
+          onClick={() => setActiveTab("teams")}
+        >
+          Team Spaces
+        </button>
+      </div>
 
       <main className="dash-main">
         {showModal && (
@@ -36,14 +54,20 @@ const DashboardContainer = ({ cat, onCat, onSubmit }) => {
 
       <div className="dash-category-wrapper">
         <div className="category-dip">
-          <Category />
+          {activeTab === "personal" ? (
+            <Category />
+          ) : (
+            <TeamSpacesList />
+          )}
         </div>
       </div>
 
-      {/* Floating Create Button */}
-      <button className="fab-button" onClick={() => setShowModal(true)}>
-        +
-      </button>
+      {/* Floating Create Button - only show for personal space */}
+      {activeTab === "personal" && (
+        <button className="fab-button" onClick={() => setShowModal(true)}>
+          +
+        </button>
+      )}
     </div>
   );
 };

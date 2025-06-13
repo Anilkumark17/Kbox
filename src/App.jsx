@@ -10,6 +10,9 @@ const AuthPage = lazy(() => import("./pages/AuthPage/AuthPage"));
 const Signup = lazy(() => import("./pages/signUp/Signup"));
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 const ResourcesContainer = lazy(() => import("./containers/resources/ResourcesContainer"));
+const TeamSpaceDashboard = lazy(() => import("./pages/teamSpace/TeamSpaceDashboard"));
+const JoinTeamSpace = lazy(() => import("./pages/teamSpace/JoinTeamSpace"));
+const TeamSpaceResourcesContainer = lazy(() => import("./containers/teamSpaces/TeamSpaceResourcesContainer"));
 
 // Fallback loader component
 const LoadingSpinner = () => (
@@ -68,6 +71,34 @@ function App() {
                 <ResourcesContainer />
               </Suspense>
             </ProtectedRouter>
+          ),
+        },
+        {
+          path: "/space/:spaceId",
+          element: (
+            <ProtectedRouter>
+              <Suspense fallback={<LoadingSpinner />}>
+                <TeamSpaceDashboard />
+              </Suspense>
+            </ProtectedRouter>
+          ),
+        },
+        {
+          path: "/space/:spaceId/category/:categoryId",
+          element: (
+            <ProtectedRouter>
+              <Suspense fallback={<LoadingSpinner />}>
+                <TeamSpaceResourcesContainer />
+              </Suspense>
+            </ProtectedRouter>
+          ),
+        },
+        {
+          path: "/join/:joinToken",
+          element: (
+            <Suspense fallback={<LoadingSpinner />}>
+              <JoinTeamSpace />
+            </Suspense>
           ),
         },
       ],

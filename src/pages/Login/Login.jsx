@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import LoginContainer from "../../containers/login/LoginContainer";
 import { supabase } from "../../utils/db";
 
-const Login = () => {
+const Login = ({ redirectUrl }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,12 +13,16 @@ const Login = () => {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        navigate("/dashboard");
+        if (redirectUrl) {
+          navigate(redirectUrl);
+        } else {
+          navigate("/dashboard");
+        }
       }
     };
 
     checkUser();
-  }, [navigate]);
+  }, [navigate, redirectUrl]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -43,7 +47,12 @@ const Login = () => {
 
       console.log("Logged in user:", user);
 
-      navigate("/dashboard");
+      // Redirect to the original URL or dashboard
+      if (redirectUrl) {
+        navigate(redirectUrl);
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
       console.error("Unexpected error:", err);
       alert("Something went wrong. Try again.");

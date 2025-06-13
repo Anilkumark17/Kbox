@@ -1,0 +1,144 @@
+/* Join Team Space Styles */
+.join-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2d343f, #1a1e26);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.join-card {
+  background-color: #3b424e;
+  border-radius: 20px;
+  padding: 3rem;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid #444c59;
+  animation: slideUp 0.5s ease;
+}
+
+.join-card h2 {
+  color: #ffffff;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.join-card p {
+  color: #c1c1c1;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.join-card p strong {
+  color: #a88eff;
+  font-weight: 600;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #3b424e;
+  border-top: 4px solid #876feb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 2rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Icons */
+.success-icon,
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.success-icon {
+  color: #10b981;
+}
+
+.error-icon {
+  color: #ef4444;
+}
+
+/* Buttons */
+.continue-btn,
+.retry-btn {
+  background: linear-gradient(135deg, #876feb, #a88eff);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.continue-btn:hover,
+.retry-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(168, 142, 255, 0.4);
+}
+
+.retry-btn {
+  background: linear-gradient(135deg, #ef4444, #f87171);
+}
+
+.retry-btn:hover {
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+}
+
+/* Card Variants */
+.join-card.error {
+  border-color: #ef4444;
+}
+
+.join-card.success {
+  border-color: #10b981;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .join-container {
+    padding: 1rem;
+  }
+
+  .join-card {
+    padding: 2rem;
+  }
+
+  .join-card h2 {
+    font-size: 1.5rem;
+  }
+
+  .success-icon,
+  .error-icon {
+    font-size: 3rem;
+  }
+}
